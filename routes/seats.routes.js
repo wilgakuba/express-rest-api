@@ -13,10 +13,11 @@ router.route('/seats/:id').get((req, res) => {
 
 router.route('/seats').post((req, res) => {
   const { day, seat, client, email } = req.body;
-  const id = uuid();
+  const id = uuid.v4();
   const newSeat = { id: id, day, seat, client, email };
   db.seats.push(newSeat);
   res.json({ message: 'ok!'});
+  req.io.emit('seatsUpdated', db.seats);
 });
 
 router.route('/seats/:id').delete((req, res) => {
