@@ -4,23 +4,9 @@ const uuid = require('uuid');
 const router = express.Router();
 const path = require('path');
 const socket = require('socket.io');
+const mongoose = require('mongoose');
 
 const app = express();
-const server = app.listen(process.env.PORT || 8000, () => {
-  console.log('Server is running on port: 8000');
-});
-
-const io = socket(server, {
-  cors: {
-    origin: 'http://localhost:3000', 
-    methods: ['GET', 'POST'],
-  },
-});
-
-
-io.on('connection', (socket) => {
-  console.log('New client! Its id' + socket.id);
-});
 
 app.use(express.static(path.join(__dirname, '/client/build')));
 
@@ -48,3 +34,28 @@ app.get('*', (req, res) => {
 app.use((req, res) => {
   res.status(400).send('Not found..');
 });
+
+const server = app.listen(process.env.PORT || 8001, () => {
+  console.log('Server is running on port: 8001');
+});
+
+const io = socket(server, {
+  cors: {
+    origin: 'http://localhost:3000', 
+    methods: ['GET', 'POST'],
+  },
+});
+
+io.on('connection', (socket) => {
+  console.log('New client! Its id' + socket.id);
+});
+
+mongoose.connect('mongodb://127.0.0.1:27017/NewWaveDB', { useNewUrlParser: true, useUnifiedTopology: true });
+const db = mongoose.connection;
+
+  
+db.once('open', () => {
+  console.log('Connected to the database');
+});
+db.on('error', err => console.log('Error ' + err));
+
