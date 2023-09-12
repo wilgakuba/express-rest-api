@@ -50,7 +50,7 @@ io.on('connection', (socket) => {
   console.log('New client! Its id' + socket.id);
 });
 
-mongoose.connect('mongodb://127.0.0.1:27017/NewWaveDB', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://fexenik:IP7qyxHOn3PTyJra@cluster0.sqcydzr.mongodb.net/NewWaveDB?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 
   
