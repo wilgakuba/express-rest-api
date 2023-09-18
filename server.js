@@ -59,3 +59,4 @@ db.once('open', () => {
 });
 db.on('error', err => console.log('Error ' + err));
 
+module.exports = server;
